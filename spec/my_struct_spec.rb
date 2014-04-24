@@ -19,4 +19,9 @@ describe MyStruct do
     expect(@my_struct.a).to equal(10)
   end
 
+  it "correct adds new fields" do
+    @my_struct.new_attr = 115
+    expect(@my_struct.new_attr).to equal(115)
+  end
+
 end

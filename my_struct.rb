@@ -1,32 +1,27 @@
-module HashAccessor
-  
-  def hash_accessor(hash_name, *key_names)
-    key_names.each do |key_name|
+class MyStruct
+	
+	def initialize(hash = {})
+		@fields = {}
 
-      define_method key_name do
-        instance_variable_get("@#{hash_name}")[key_name]
-      end
+    hash.each do |key, value|
+      self.send("#{key}=", value)
+    end
+	end
 
-      define_method "#{key_name}=" do |value|
-        instance_variable_get("@#{hash_name}")[key_name] = value
-      end
-
+  def method_missing(meth, *args)
+    field = meth.to_s
+    if field[-1] == "="
+      @fields[field.chop] = args[0]
+    else
+      @fields[field]
     end
   end
 
 end
 
 
-class MyStruct
-	extend HashAccessor
+my_struct = MyStruct.new({b:8, a:778})
+my_struct.c = 7
+puts my_struct.c
+puts my_struct.a
 
-	hash_accessor :hash, :a, :b, :c
-	
-	def initialize(hash = {})
-		@hash = hash
-	end
-
-end
-
-my_struct = MyStruct.new({a:2, b:3, c:4})
-puts my_struct.c = 7
