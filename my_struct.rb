@@ -1,12 +1,12 @@
 class MyStruct
-	
-	def initialize(hash = {})
-		@fields = {}
+
+  def initialize(hash = {})
+    @fields = {}
 
     hash.each do |key, value|
       self.send("#{key}=", value)
     end
-	end
+  end
 
   def method_missing(meth, *args)
     field = meth.to_s
